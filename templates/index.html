@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card border-secondary shadow">
+          <div class="card-header bg-secondary text-white text-center">
+            <h2>DeTuO</h2>
+            <p class="lead mb-0">Sistem Pendeteksi Tumor Otak</p>
+          </div>
+          <div class="card-body">
+            <form id="upload-file" method="post" enctype="multipart/form-data">
+              <div class="form-group text-center">
+                <label for="imageUpload" class="btn btn-primary btn-block">
+                  <i class="fas fa-cloud-upload-alt mr-2"></i>
+                  Pilih Gambar
+                </label>
+                <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg" class="d-none">
+              </div>
+              <div class="form-group">
+                <label for="modelSelection">Pilih Model:</label>
+                <select class="form-control" id="modelSelection" name="model">
+                  <option value="model1">EfficientNet-B0</option>
+                  <option value="model2">InceptionResNetV2</option>
+                  <option value="model3">VGG16</option>
+                </select>
+              </div>
+              <div class="text-center">
+                <div class="image-section mt-4" style="display:none;">
+                  <div class="img-preview">
+                    <div id="imagePreview"></div>
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-primary mt-3" id="btn-predict">
+                      <i class="fas fa-search mr-2"></i>
+                      Deteksi
+                    </button>
+                  </div>
+                </div>
+                <div class="loader my-5" style="display:none;"></div>
+                <h3 id="result" class="mt-5" style="display:none;">
+                  <span></span>
+                </h3>
+                <h4 id="confidence" class="mt-3" style="display:none;">
+                  <span></span>
+                </h4>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .img-preview {
+      width: 100%;
+      height: 300px;
+      border-radius: 5px;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin-bottom: 20px;
+    }
+
+    .loader {
+      border: 10px solid #f3f3f3;
+      border-top: 10px solid #3498db;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+      display: block;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Show preview image
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imageUpload").change(function () {
+            $('.image-section').show();
+            $('#btn-predict').show();
+            $('#result').text('');
+            $('#result').hide();
+            $('#confidence').text(''); // Clear confidence when new image is uploaded
+            readURL(this);
+        });
+
+        // Predict image when "Deteksi" button is clicked
+        $('#btn-predict').click(function () {
+            var form_data = new FormData($('#upload-file')[0]);
+
+            // Show loading animation
+            $(this).hide();
+            $('.loader').show();
+
+            // Make prediction by calling server Flask
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: form_data,
+                contentType: false,
+                cache: false,
+                processData: false,
+                async: true,
+                success: function (data) {
+                    // Hide loading animation
+                    $('.loader').hide();
+
+                    // Show result and confidence
+                    $('#result').fadeIn(600);
+                    $('#result').text('Hasil Deteksi adalah: ' + data.prediction);
+
+                    // Parse confidence from response data
+                    var confidence = data.confidence;
+                    // Show confidence
+                    $('#confidence').fadeIn(600);
+                    $('#confidence').text('Keakuratan: ' + confidence + '%');
+                },
+            });
+        });
+
+    });
+</script>
+{% endblock %}

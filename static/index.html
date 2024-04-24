@@ -1,0 +1,34 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="main">
+  <div class="title">
+    <img src="static/logo.png" width="300" style="margin-top: 40px; margin-bottom: 24px">
+    <!-- <p>
+      <small>A web app demo</small>
+    </p> -->
+  </div>
+
+  <div class="panel">
+    <input id="file-upload" class="hidden" type="file" accept="image/x-png,image/gif,image/jpeg" />
+    <label for="file-upload" id="file-drag" class="upload-box">
+      <div id="upload-caption">Drop/load gambar disini</div>
+      <img id="image-preview" class="hidden" />
+    </label>
+  </div>
+  <div style="margin-bottom: 2rem;">
+    <input type="button" value="Prediksi Genus" class="button" onclick="submitImage();" />
+    <span style="margin: 0px 4px"></span>
+    <input type="button" value="Hapus" class="button" onclick="clearImage();" />
+  </div>
+
+  <div id="image-box">
+    <img id="image-display" />
+    <div id="pred-result" class="hidden"></div>
+    <div id="pred-probability" class="hidden" style="visibility: visible;"></div>
+    <svg id="loader" class="hidden" viewBox="0 0 32 32" width="32" height="32">
+      <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+    </svg>
+  </div>
+</div>
+
+{% endblock %}

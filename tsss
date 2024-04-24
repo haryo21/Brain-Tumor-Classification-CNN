@@ -1,0 +1,44 @@
+from flask import Flask, render_template, request
+from tensorflow.keras.models import load_model
+import numpy as np
+from tensorflow.keras.preprocessing.image import load_img
+from tensorflow.keras.applications.vgg16 import preprocess_input
+import os
+from tensorflow.keras.preprocessing import image
+from PIL import Image
+import tensorflow as tf
+import cv2
+
+app = Flask(__name__)
+model = tf.keras.models.load_model('effnet.h5')
+target_img = os.path.join(os.getcwd() , 'static/images')
+
+labels = ['Glioma Tumor', 'No Tumor', 'Meningioma Tumor', 'Pituitary Tumor']
+
+@app.route('/')
+def index_view():
+    return render_template('index.html')
+
+
+           
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Get the file from the post request
+    file = request.files['file']
+
+    # Read the image
+    img = Image.open(file.stream)
+    opencvImage = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+    img = cv2.resize(opencvImage, (150, 150))
+    img = img.reshape(1, 150, 150, 3)
+
+    # Predict the class of the image
+    prediction = model.predict(img)
+    prediction = np.argmax(prediction, axis=1)[0]
+    label = labels[prediction]
+
+    return render_template('predict.html', label=label)
+
+if __name__ == '__main__':
+    app.run(debug=True,use_reloader=False, port=8000)

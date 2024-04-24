@@ -1,0 +1,68 @@
+<!-- hasil_akurasi.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card border-secondary shadow">
+        <div class="card-header bg-secondary text-white text-center">
+          <h2>Hasil Model EfficientNet-B0</h2>
+        </div>
+        <div class="card-body text-center">
+          <img src="/static/images/grafik_efficient.png" alt="Grafik Model" class="img-fluid img-size">
+          <img src="/static/images/confusion_efficient.png" alt="Confusion Matrix" class="img-fluid img-size">
+          <img src="/static/images/hasil_efficient.png" alt="Grafik Model" class="img-fluid img-kecil">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card border-secondary shadow">
+        <div class="card-header bg-secondary text-white text-center">
+          <h2>Hasil Model VGG16</h2>
+        </div>
+        <div class="card-body text-center">
+          <img src="/static/images/grafik_vgg.png" alt="Grafik Model" class="img-fluid img-size">
+          <img src="/static/images/confusion_vgg.png" alt="Confusion Matrix" class="img-fluid img-size">
+          <img src="/static/images/hasil_vgg.png" alt="Grafik Model" class="img-fluid img-kecil">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card border-secondary shadow">
+        <div class="card-header bg-secondary text-white text-center">
+          <h2>Hasil Model InceptionResNetV2</h2>
+        </div>
+        <div class="card-body text-center">
+          <img src="/static/images/grafik_inception.png" alt="Grafik Model" class="img-fluid img-size">
+          <img src="/static/images/confusion_inception.png" alt="Confusion Matrix" class="img-fluid img-size">
+          <img src="/static/images/hasil_inception.png" alt="Grafik Model" class="img-fluid img-kecil">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .img-size {
+    width: 540px; /* Atur ukuran lebar gambar sesuai yang diinginkan */
+    height: 320px; /* Atur ukuran tinggi gambar sesuai yang diinginkan */
+    margin: 10px; /* Atur margin antar gambar agar terlihat lebih rapi */
+  }
+  .img-kecil {
+    width: 400px; /* Atur ukuran lebar gambar sesuai yang diinginkan */
+    height: 200px; /* Atur ukuran tinggi gambar sesuai yang diinginkan */
+    margin: 10px; /* Atur margin antar gambar agar terlihat lebih rapi */
+  }
+</style>
+{% endblock %}
