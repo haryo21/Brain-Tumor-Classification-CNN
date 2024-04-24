@@ -13,7 +13,7 @@ To begin with the project, follow these steps:
 
 1. Clone the repository:
 bash
-git clone [https://github.com/haryo21/Brain-Tumor-Classification-CNN.git]
+git clone https://github.com/haryo21/Brain-Tumor-Classification-CNN.git
 
 2. Install the required dependencies:
 
